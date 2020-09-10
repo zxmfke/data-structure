@@ -2,6 +2,10 @@ package stack
 
 import "fmt"
 
+/**
+ * @Author: Zheng xiaomin
+ * @Date: 2020/9/10 23:00 晚上
+ */
 
 //Push O(1)
 //Pop  O(1)

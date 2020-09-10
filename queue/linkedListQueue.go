@@ -2,6 +2,11 @@ package queue
 
 import "fmt"
 
+/**
+ * @Author: Zheng xiaomin
+ * @Date: 2020/9/10 23:00 晚上
+ */
+
 // Enqueue(interface{}) error      O(1)
 // Dequeue() (interface{}, error)  O(1)
 // GetFront() (interface{}, error) O(1)
