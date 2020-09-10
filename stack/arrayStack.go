@@ -7,6 +7,10 @@ import "fmt"
  * @Date: 2020/9/8 20:00 晚上
  */
 
+//Push O(1)
+//Pop  O(n)
+//Peek O(1)
+
 type ArrayStack struct {
 	data        []interface{}
 	size        int
@@ -66,15 +70,15 @@ func (a *ArrayStack) IsEmpty() bool {
 	return a.size == 0
 }
 
-func (a *ArrayStack) Enqueue(value interface{}) error {
+func (a *ArrayStack) Push(value interface{}) error {
 	return a.addLast(value)
 }
 
-func (a *ArrayStack) Dequeue() (interface{}, error) {
+func (a *ArrayStack) Pop() (interface{}, error) {
 	return a.removeLast()
 }
 
-func (a *ArrayStack) GetFront() (interface{}, error) {
+func (a *ArrayStack) Peek() (interface{}, error) {
 	last := a.size - 1
 	if last != -1 {
 		return a.get(last)

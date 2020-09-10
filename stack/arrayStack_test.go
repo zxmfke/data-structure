@@ -1,6 +1,10 @@
 package stack
 
-import "testing"
+import (
+	"math/rand"
+	"testing"
+	"time"
+)
 
 func testEq(a []int, b []interface{}) bool {
 	// If one is nil, the other must also be nil.
@@ -73,7 +77,7 @@ func TestArrayStack_Push(t *testing.T) {
 	for _, v := range cases {
 
 		t.Run(v.name, func(t *testing.T) {
-			err := arrStack.Enqueue(v.value)
+			err := arrStack.Push(v.value)
 			if err != v.wantErr {
 				t.Errorf("test stack push fail , expected : %v, result : %v", v.wantErr, err)
 			} else {
@@ -136,7 +140,7 @@ func TestArrayStack_Pop(t *testing.T) {
 	for _, v := range cases {
 
 		t.Run(v.name, func(t *testing.T) {
-			value, err := arrStack.Dequeue()
+			value, err := arrStack.Pop()
 			if err != v.wantErr {
 				t.Errorf("test stack pop fail , expected : %v, result : %v", v.wantErr, err)
 			} else {
@@ -150,4 +154,29 @@ func TestArrayStack_Pop(t *testing.T) {
 	}
 
 	t.Log("finished")
+}
+
+func BenchmarkArrayStack_Push(b *testing.B) {
+	var times = 10000
+	arrayStack := NewArrayStack(times)
+	rand.Seed(time.Now().UnixNano())
+	for i := 0; i < times; i++ {
+		v := rand.Intn(100)
+		_ = arrayStack.Push(v)
+	}
+}
+
+func BenchmarkArrayListStack_Pop(b *testing.B) {
+	var times = 10000
+	arrayStack := NewArrayStack(times)
+	rand.Seed(time.Now().UnixNano())
+	for i := 0; i < times; i++ {
+		v := rand.Intn(100)
+		_ = arrayStack.Push(v)
+	}
+
+
+	for i := 0; i < times; i++ {
+		_, _ = arrayStack.Pop()
+	}
 }
