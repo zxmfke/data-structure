@@ -23,7 +23,23 @@ func TestNode_Add(t *testing.T) {
 
 	fmt.Printf("contains : %v \n", bst.Contains(-1))
 
-	bst.InOrder()
-	bst.PostOrder()
-	bst.PreOrder()
+	//bst.PostOrder()
+	//bst.PreOrder()
+	//bst.PreOrderNR()
+	//bst.InOrder()
+	//bst.InOrderNR()
+
+	//bst.LevelOrder()
+
+	//maxNode, _ := bst.FindMaximum()
+	//t.Logf("max : %d", maxNode.value)
+	//minNode, _ := bst.FindMinimum()
+	//t.Logf("min : %d", minNode.value)
+
+	//_, _ = bst.RemoveMin()
+	//_, _ = bst.RemoveMin()
+
+	_ = bst.Remove(3)
+
+	bst.LevelOrder()
 }
