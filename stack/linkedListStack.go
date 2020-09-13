@@ -84,7 +84,7 @@ func (l *LinkedListStack) Push(value interface{}) error {
 	//node.next = l.DummyHead
 	//l.DummyHead = node
 
-	return l.add(value, 1)
+	return l.add(value, l.size)
 }
 
 func (l *LinkedListStack) add(value interface{}, index int) error {
