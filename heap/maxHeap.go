@@ -2,6 +2,29 @@ package heap
 
 import "github.com/navi-tt/data-structure/arrayList"
 
+/**
+ * @Author: Zheng xiaomin
+ * @Date: 2020/9/17 22:00 晚上
+ */
+
+
+//Add       O(n)   因为添加元素有可能导致扩容
+//RemoveMax O(logn)
+
+//insert with array
+//by add     O(nlogn)
+//by heapify O(n)
+
+//可以添加一个比较器，来定义比较的方式，不用单单比较int的大小
+
+//leecode 347
+
+//扩展
+// d-ary Heap
+// 索引堆
+// 二项堆
+// 斐波那契堆
+
 type MaxHeap struct {
 	arr *arrayList.ArrayList
 }
@@ -18,6 +41,23 @@ func NewDefaultMaxHeap() *MaxHeap {
 	}
 }
 
+// O(logn)
+func NewMaxHeapByHeapify(arr []int) *MaxHeap {
+
+	maxHeap := NewMaxHeap(len(arr)).WithData(arr)
+
+	for i := maxHeap.parent(len(arr) - 1); i >= 0; i-- {
+		maxHeap.siftDown(i)
+	}
+
+	return maxHeap
+}
+
+func (m *MaxHeap) WithData(arr []int) *MaxHeap {
+	m.arr.WithData(arr)
+	return m
+}
+
 func (m *MaxHeap) GetSize() int {
 	return m.arr.Length()
 }
@@ -28,6 +68,13 @@ func (m *MaxHeap) Capacity() int {
 
 func (m *MaxHeap) IsEmpty() bool {
 	return m.arr.IsEmpty()
+}
+
+func (m *MaxHeap) FindMax() (int, error) {
+	if m.GetSize() == 0 {
+		return -1, heapIsEmpty
+	}
+	return m.get(0), nil
 }
 
 func (m *MaxHeap) get(index int) int {
@@ -104,4 +151,19 @@ func (m *MaxHeap) siftDown(index int) {
 		_ = m.arr.Swap(index, j)
 		index = j
 	}
+}
+
+// O(logn)
+func (m *MaxHeap) Replace(value int) (int, error) {
+	maxValue, err := m.FindMax()
+	if err != nil {
+		return -1, err
+	}
+
+	if err := m.arr.Set(value, 0); err != nil {
+		return -1, err
+	}
+
+	m.siftDown(0)
+	return maxValue, nil
 }

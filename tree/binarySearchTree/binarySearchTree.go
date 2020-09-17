@@ -6,6 +6,11 @@ import (
 	"github.com/navi-tt/data-structure/stack"
 )
 
+/**
+ * @Author: Zheng xiaomin
+ * @Date: 2020/9/13 22:00 晚上
+ */
+
 type BinarySearchTree struct {
 	root *node
 	size int
