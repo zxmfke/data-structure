@@ -43,3 +43,31 @@ func TestNode_Add(t *testing.T) {
 
 	bst.LevelOrder()
 }
+
+func BenchmarkBinarySearchTree_Add(b *testing.B) {
+	bst := NewBinarySearchTreeRoot()
+
+	times := 100000
+
+	for i := 0; i < times; i++ {
+		bst.Add(i)
+	}
+}
+
+func BenchmarkBinarySearchTree_Contains(b *testing.B) {
+	bst := NewBinarySearchTreeRoot()
+	tmpArray := []int{}
+
+	times := 100000
+
+	for i := 0; i < times; i++ {
+		bst.Add(i)
+		tmpArray = append(tmpArray, i)
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < times; i++ {
+		bst.Contains(i)
+	}
+}

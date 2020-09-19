@@ -11,6 +11,11 @@ import (
  * @Date: 2020/9/13 22:00 晚上
  */
 
+//Add     O(logn) 最差O(n)
+//Delete  O(logn) 最差O(n)
+//Update  O(logn)
+//Get     O(logn)
+
 type BinarySearchTree struct {
 	root *node
 	size int
@@ -53,6 +58,14 @@ func (b *BinarySearchTree) add(value int, node *node) *node {
 	}
 
 	return node
+}
+
+func (b *BinarySearchTree) GetSize() int {
+	return b.size
+}
+
+func (b *BinarySearchTree) IsEmpty() bool {
+	return b.size == 0
 }
 
 func (b *BinarySearchTree) Contains(value int) bool {
