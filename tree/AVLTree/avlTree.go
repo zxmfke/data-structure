@@ -260,3 +260,141 @@ func max(a, b int) int {
 
 	return b
 }
+
+func (a *AVLTree) Remove(value int) {
+	node := a.GetNode(value)
+	if node == nil {
+		return
+	}
+
+	a.root = a.remove(a.root, value)
+	return
+}
+
+func (a *AVLTree) remove(n *node, value int) *node {
+	if n == nil {
+		return nil
+	}
+
+	var tmpNode *node
+
+	if n.value > value {
+		n.right = a.remove(n.right, value)
+		tmpNode = n
+	} else if n.value < value {
+		n.left = a.remove(n.left, value)
+		tmpNode = n
+	} else {
+
+		// 左子树为空
+		if n.left == nil {
+			rightNode := n.right
+			n.right = nil
+			a.size--
+			tmpNode = rightNode
+		}
+
+		// 右子树为空
+		if n.right == nil {
+			leftNode := n.left
+			n.left = nil
+			a.size--
+			tmpNode = leftNode
+		}
+
+		successor := a.minimum(n.right)
+		successor.right = a.remove(n.right, value)
+		successor.left = n.left
+		n.left, n.right = nil, nil
+
+		tmpNode = successor
+
+	}
+
+	if tmpNode == nil {
+		return nil
+	}
+
+	// 更新高度
+	tmpNode.height = 1 + max(tmpNode.right.getHeight(), tmpNode.left.getHeight())
+
+	// 计算平衡因子
+	balanceFactor := tmpNode.getBalanceFactor()
+
+	// 维护平衡性
+	// LL
+	if balanceFactor > 1 && tmpNode.left.getBalanceFactor() >= 0 {
+		return a.rightRotate(tmpNode)
+	}
+
+	// RR
+	if balanceFactor < -1 && tmpNode.right.getBalanceFactor() <= 0 {
+		return a.leftRotate(tmpNode)
+	}
+
+	// LR
+	if balanceFactor > 1 && tmpNode.left.getBalanceFactor() < 0 {
+		tmpNode.left = a.leftRotate(tmpNode.left)
+		return a.rightRotate(tmpNode)
+	}
+
+	// RL
+	if balanceFactor < -1 && tmpNode.left.getBalanceFactor() > 0 {
+		tmpNode.right = a.rightRotate(tmpNode.right)
+		return a.leftRotate(tmpNode)
+	}
+
+	return tmpNode
+}
+
+func (a *AVLTree) GetNode(value int) *node {
+	if a.root == nil {
+		return nil
+	}
+
+	return a.getNode(a.root, value)
+}
+
+func (a *AVLTree) getNode(node *node, value int) *node {
+	if node == nil {
+		return nil
+	}
+
+	if node.value < value {
+		return a.getNode(node.right, value)
+	} else if node.value > value {
+		return a.getNode(node.left, value)
+	}
+
+	return node
+}
+
+func (a *AVLTree) FindMinimum() (*node, error) {
+	if a.root == nil {
+		return nil, avlIsEmpty
+	}
+
+	return a.minimum(a.root), nil
+}
+
+func (a *AVLTree) minimum(node *node) *node {
+	for ; node != nil; {
+		if node.left == nil {
+			break
+		}
+		node = node.left
+	}
+	return node
+}
+
+func (a *AVLTree) removeMin(removeNode *node) *node {
+	if removeNode.left == nil {
+		rightChild := removeNode.right
+		removeNode.right = nil
+		a.size--
+		return rightChild
+	}
+
+	removeNode.left = a.removeMin(removeNode.left)
+	return removeNode
+}
